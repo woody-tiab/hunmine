@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>훈민초등학교 연구학교 운영 보고 대시보드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 디자인 테마: Professional Blue & Paperlogy 폰트 적용 */
+        :root {
+            --primary-color: #0052cc; /* 주요 색상 */
+            --background-color: #f0f2f5; /* 배경 색상 */
+            --text-color: #172b4d; /* 텍스트 색상 */
+            --card-bg-color: #ffffff;
+            --border-color: #dfe1e6;
+        }
+
+        body {
+            font-family: "Paperlogy", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* 활성화된 메뉴 스타일 */
+        .sidebar-nav .active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 기본 메뉴 스타일 */
+        .sidebar-nav li {
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-nav li:hover {
+            background-color: #e6f0ff;
+        }
+
+        /* 콘텐츠 섹션 초기 숨김 */
+        .content-section {
+            display: none;
+        }
+
+        /* 첫 번째 섹션만 보이도록 설정 */
+        #overview {
+            display: block;
+        }
+
+        /* 카드 스타일 */
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* 이미지 갤러리 스타일 */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .image-gallery .item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            background-color: #fafafa;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .image-gallery .caption {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white shadow-md flex-shrink-0">
+        <div class="p-6 bg-[var(--primary-color)] text-white">
+            <h1 class="text-xl font-bold">훈민초등학교</h1>
+            <p class="text-sm">연구학교 운영 보고</p>
+        </div>
+        <nav>
+            <ul class="sidebar-nav mt-4">
+                <li class="p-4 cursor-pointer active" onclick="showSection('overview')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                    연구학교 개요
+                </li>
+                <li class="p-4 cursor-pointer" onclick="showSection('infra')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm3 10a1 1 0 00-1 1v1a1 1 0 102 0v-1a1 1 0 00-1-1zM9 9a1 1 0 100 2h2a1 1 0 100-2H9zm4 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" /></svg>
+                    디지털 인프라 구축
+                </li>
+                <li class="p-4 cursor-pointer" onclick="showSection('teacher')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0110 14.93a5 5 0 01-1.5-2.26A6.97 6.97 0 007 16c0 .34.024.673.07 1h5.86zM12 14a5 5 0 01-10 0v-1c0-2.21 1.79-4 4-4h2a4 4 0 014 4v1z" /></svg>
+                    교원 역량 강화
+                </li>
+                <li class="p-4 cursor-pointer" onclick="showSection('activity')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>
+                    교육 활동 적용 사례
+                </li>
+                <li class="p-4 cursor-pointer" onclick="showSection('community')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" /></svg>
+                    교육공동체 협력
+                </li>
+                <li class="p-4 cursor-pointer" onclick="showSection('result')">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" /></svg>
+                    주요 성과 및 기대효과
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-y-auto">
+        <!-- Section 1: 연구학교 개요 -->
+        <section id="overview" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 border-b-2 border-[var(--primary-color)] pb-2">연구학교 개요</h2>
+            <div class="card">
+                <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-4">TASK 프로그램을 통한 AIDT 기반 교실 혁신 연구</h3>
+                <p class="mb-4 text-lg">
+                    본 연구는 AI 디지털교과서(AIDT)와 AI 기반 코스웨어를 활용하여 디지털 기반 교육혁신을 구현하고, 교실혁명의 핵심 가치를 현장에 적용하는 것을 목표로 합니다.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-2">연구의 목적</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>학습자 특성 기반의 <strong>개별화된 성장 지원 방안</strong> 마련 및 학생 중심 학습 환경 구축</li>
+                            <li>학습데이터 분석 및 활용을 통한 <strong>교육격차 해소</strong> 및 학생의 사회·정서적 발달 지원</li>
+                            <li>디지털 기술 기반 교수·학습 혁신을 통한 <strong>교사 전문성 발휘</strong> 및 깊이있는 학습 활성화</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold mb-2">연구과제 (T.A.S.K)</h4>
+                        <ul class="list-none space-y-2">
+                            <li><strong><span class="text-[var(--primary-color)] font-bold">T</span>rack:</strong> AIDT·AI코스웨어 기반 학습 데이터 추적</li>
+                            <li><strong><span class="text-[var(--primary-color)] font-bold">A</span>nalyze:</strong> 학습 및 정서 데이터 분석을 통한 수업 맞춤화</li>
+                            <li><strong><span class="text-[var(--primary-color)] font-bold">S</span>upport:</strong> 데이터 기반 학생 맞춤형 수업·평가 지원</li>
+                            <li><strong><span class="text-[var(--primary-color)] font-bold">K</span>now:</strong> 실행 결과와 경험 공유를 통한 일반화</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: 디지털 인프라 구축 -->
+        <section id="infra" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 border-b-2 border-[var(--primary-color)] pb-2">디지털 인프라 구축</h2>
+            <div class="space-y-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">1인 1디바이스 기반 최첨단 학습 환경 완비</h3>
+                    <p class="mb-4">AIDT 및 AI 코스웨어의 듣기·말하기 등 상호작용 학습을 효과적으로 지원하고, 모든 학생에게 균등한 디지털 학습 기회를 제공하기 위해 1인 1디바이스 환경을 구축하고 체계적인 관리 시스템을 운영합니다.</p>
+                    <div class="image-gallery">
+                        <div class="item"><img src="https://i.imgur.com/YQwOgbl.jpg" alt="태블릿 보관함"><div class="caption">학급별 태블릿 충전 보관함</div></div>
+                        <div class="item"><img src="https://i.imgur.com/VSH7MmK.jpg" alt="개인별 태블릿"><div class="caption">개인별 번호/이름 라벨링</div></div>
+                        <div class="item"><img src="https://i.imgur.com/vbqfsIy.jpg" alt="태블릿 라벨"><div class="caption">관리 자산 스티커 부착</div></div>
+                        <div class="item"><img src="https://i.imgur.com/RBUszue.jpg" alt="태블릿용 키보드 보관함"><div class="caption">태블릿용 키보드 보관 및 관리</div></div>
+                        <div class="item"><img src="https://i.imgur.com/M9eEhGg.jpg" alt="이어폰 보관 가방"><div class="caption">듣기 학습용 이어폰</div></div>
+                        <div class="item"><img src="https://i.imgur.com/39lLvU1.jpg" alt="헤드셋"><div class="caption">듣기·말하기 활동용 헤드셋</div></div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="text-xl font-semibold mb-4">교수·학습 혁신을 위한 교사 기자재 지원</h3>
+                        <p class="mb-4">교사가 디지털 도구를 활용하여 학생들에게 보다 직관적이고 상세한 피드백을 제공할 수 있도록 펜타블렛을 지급하여, 디지털 환경에서도 아날로그적 상호작용이 가능하도록 지원합니다.</p>
+                        <div class="image-gallery" style="grid-template-columns: 1fr;"><div class="item"><img src="https://i.imgur.com/HjivU6Q.jpg" alt="펜타블렛"><div class="caption">교사용 펜타블렛 지급</div></div></div>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-xl font-semibold mb-4">수업 몰입도 향상을 위한 에듀테크 도입</h3>
+                        <p class="mb-4">학생들의 자발적 참여와 학습 동기를 극대화하기 위해, 게이미피케이션 및 콘텐츠 제작 등 다양한 상호작용이 가능한 유료 에듀테크 서비스를 도입하여 수업에 활발히 적용하고 있습니다.</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>띵커벨/블루킷:</strong> 퀴즈, 게임 기반의 실시간 상호작용으로 학습 내용의 재미와 몰입도 증진</li>
+                            <li><strong>북크리에이터:</strong> 학생들이 직접 디지털 책을 만들며 창의력, 문해력, 협업 능력을 함양하는 프로젝트 활동에 활용</li>
+                        </ul>
+                        <div class="image-gallery mt-4">
+                            <div class="item"><img src="https://i.imgur.com/xLgD5rD.jpg" alt="띵커벨"><div class="caption">띵커벨 활용 수업</div></div>
+                            <div class="item"><img src="https://i.imgur.com/wctb6B7.jpg" alt="블루킷"><div class="caption">블루킷 게임 기반 학습</div></div>
+                            <div class="item"><img src="https://i.imgur.com/jBK6mvx.jpg" alt="북크리에이터"><div class="caption">북크리에이터 활용 프로젝트</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: 교원 역량 강화 -->
+        <section id="teacher" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 border-b-2 border-[var(--primary-color)] pb-2">교원 역량 강화</h2>
+            <div class="space-y-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">T.A.S.K. 모델 기반 교원 전문성 강화 연수 (실적)</h3>
+                    <p class="mb-4">데이터 기반의 학생 맞춤형 교육을 실현하기 위해 연구과제(T.A.S.K.)와 연계한 심화 연수를 주기적으로 실시하여 교원의 디지털 교수 역량을 체계적으로 강화하고 있습니다.</p>
+                    <div class="image-gallery">
+                        <div class="item"><img src="https://i.imgur.com/qiy0dDl.jpg" alt="AI활용 맞춤형교육 연수"><div class="caption">AI활용 맞춤형 교육 연수</div></div>
+                        <div class="item"><img src="https://i.imgur.com/kDut473.jpg" alt="생성형AI 연수"><div class="caption">생성형AI 활용 연수</div></div>
+                        <div class="item"><img src="https://i.imgur.com/NIBnIBl.jpg" alt="학생데이터분석 연수"><div class="caption">학생 데이터 분석 연수</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">관내 교사 대상 공개 수업 및 나눔 (확산)</h3>
+                    <p class="mb-4">연구학교 운영의 성과와 노하우를 지역 교육계와 공유하고 디지털 교육 선도 학교로서의 역할을 수행하기 위해, 관내 교사 대상 공개 수업(연 10회 이상)을 활발히 진행하였습니다.</p>
+                    <div class="image-gallery">
+                        <div class="item"><img src="https://i.imgur.com/hjJLEUD.jpg" alt="AIDT 활용 수학 공개수업"><div class="caption">AIDT 활용 수학 공개수업</div></div>
+                        <div class="item"><img src="https://i.imgur.com/HySUny7.jpg" alt="생성형AI 활용 공개수업"><div class="caption">생성형AI 활용 공개수업</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: 교육 활동 적용 사례 -->
+        <section id="activity" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 border-b-2 border-[var(--primary-color)] pb-2">교육 활동 적용 사례</h2>
+            <div class="space-y-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">AIDT 및 하이러닝 연계 학생 참여형 수업 (3-4학년)</h3>
+                    <p class="mb-4">3-4학년군을 중심으로 AIDT로 개별 맞춤 학습을 진행하고, 하이러닝 플랫폼을 활용하여 모둠별 협력 학습 및 프로젝트 활동을 연계하는 블렌디드 러닝 모델을 적용하고 있습니다.</p>
+                    <div class="image-gallery">
+                        <div class="item">
+                            <img src="https://i.imgur.com/hjJLEUD.jpg" alt="AIDT 활용 수업">
+                            <div class="caption">AIDT 활용 학생 맞춤형 교육</div>
+                        </div>
+                        <div class="item">
+                            <img src="https://i.imgur.com/xuzqHY2.jpg" alt="하이러닝 활용 수업">
+                            <div class="caption">하이러닝 활용 맞춤형 교육</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">AI 코스웨어 활용 맞춤형 교육 (5-6학년)</h3>
+                    <p class="mb-4">AIDT 미도입 학년의 학습 격차를 해소하고 맞춤형 교육을 제공하기 위해, 교과 특성에 맞는 AI 코스웨어를 적극 도입하여 활용하고 있습니다.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-800">영어·수학 교과: 알공</h4>
+                            <p class="text-sm mt-2 mb-2">AI가 학생의 수준과 학습 이력을 분석하여 개인별로 최적화된 영어, 수학 학습 콘텐츠를 제공합니다. 게임, 미션 등 흥미 요소를 통해 학습 동기를 유발하고, 실시간 피드백과 자동 리포트로 자기주도적 학습을 지원합니다.</p>
+                            <img src="https://i.imgur.com/sIMcpjw.jpg" alt="알공 활용" class="mt-2 rounded-lg shadow-md">
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-purple-800">수학 교과: 수학대왕</h4>
+                            <p class="text-sm mt-2">AI 진단을 통해 학생 개별 수준에 맞는 문제와 학습 경로를 제공합니다. 학습 결과, 진도, 취약점 등을 시각적으로 제공하여 자기주도적 학습 계획 수립을 지원하며, 반복 및 심화 학습 기능으로 체계적인 실력 향상을 돕습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: 교육공동체 협력 -->
+        <section id="community" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 border-b-2 border-[var(--primary-color)] pb-2">교육공동체 협력</h2>
+            <div class="card">
+                <h3 class="text-xl font-semibold mb-4">학부모 대상 연수를 통한 교육 파트너십 구축</h3>
+                <p class="mb-4">디지털 기반 교육혁신에 대한 학부모의 이해를 높이고 가정과의 연계를 강화하기 위해, 'AIDT·하이러닝 제대로 알기' 연수를 진행하여 교육 동반자로서의 학부모 파트너십을 구축했습니다.</p>
+                <div class="bg-gray-100 p-6 rounded-lg border border-gray-200">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>연수 내용:</strong> 미래 교육의 변화, AIDT 기능 및 학습 효과, 하이러닝을 활용한 자녀 학습 지원 방법, 디지털 기기 역기능 예방 교육 등</li>
+                        <li><strong>주요 성과:</strong> 관내 학부모 <strong>27명</strong> 참여, 디지털 교육에 대한 긍정적 공감대 형성 및 학교 교육 신뢰도 제고</li>
+                    </ul>
+                    <div class="image-gallery mt-4" style="grid-template-columns: 1fr;">
+                        <div class="item"><img src="https://i.imgur.com/qF06da7.jpg" alt="학부모 연수"><div class="caption">AIDT·하이러닝 이해 학부모 연수</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: 주요 성과 및 기대효과 -->
+        <section id="result" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 border-b-2 border-[var(--primary-color)] pb-2">주요 성과 및 기대효과</h2>
+            <div class="space-y-8">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">주요 성과 요약</h3>
+                    <ul class="list-disc pl-5 space-y-3">
+                        <li><strong><span class="font-bold">최첨단 디지털 교육 환경 완비:</span></strong> 1인 1디바이스 및 필수 기자재를 완비하고 체계적인 관리 시스템을 구축하여, 언제든 디지털 수업이 가능한 환경 조성</li>
+                        <li><strong><span class="font-bold">데이터 기반 교사 전문성 강화:</span></strong> T.A.S.K. 모델과 연계된 단계별 연수를 통해 교원의 데이터 분석 및 맞춤형 수업 설계 역량 내재화</li>
+                        <li><strong><span class="font-bold">전 학년 맞춤형 교육 모델 적용:</span></strong> AIDT(3-4학년)와 AI 코스웨어(5-6학년)를 활용한 전 학년 대상 맞춤형 교육 모델 실천 및 학습 격차 해소 기반 마련</li>
+                        <li><strong><span class="font-bold">교육공동체 파트너십 구축:</span></strong> 학부모·지역사회 대상 연수 및 공개수업을 통해 디지털 교육에 대한 공감대를 형성하고 신뢰 기반의 협력 체계 구축</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">기대 효과</h3>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">학생</h4>
+                            <p class="text-sm">데이터 기반 개별 맞춤 학습으로 자기주도적 학습 능력 및 학습 몰입도 향상, 협력 및 문제해결 역량 강화</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">교사</h4>
+                            <p class="text-sm">데이터 기반 수업 설계 전문성 강화, 학생 개개인에 집중하는 교육적 상호작용 시간 확보 및 맞춤형 수업·평가 역량 신장</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">학교·지역사회</h4>
+                            <p class="text-sm">학생 맞춤형 수업·평가 체계 구축, 연구 성과 및 우수 사례의 일반화를 통한 지역 내 디지털 교육 거점 학교 역할 수행</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // DOM이 완전히 로드된 후 스크립트 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.content-section');
+            const navLinks = document.querySelectorAll('.sidebar-nav li');
+
+            // 초기 상태 설정: 첫 번째 메뉴 활성화
+            if (navLinks.length > 0) {
+                navLinks[0].classList.add('active');
+            }
+            if (sections.length > 0) {
+                sections[0].style.display = 'block';
+            }
+            
+            // 전역 스코프에 함수 노출
+            window.showSection = function(sectionId) {
+                // 모든 섹션 숨기기
+                sections.forEach(section => {
+                    if (section) {
+                        section.style.display = 'none';
+                    }
+                });
+
+                // 클릭된 섹션 보이기
+                const activeSection = document.getElementById(sectionId);
+                if (activeSection) {
+                    activeSection.style.display = 'block';
+                }
+
+                // 모든 메뉴에서 active 클래스 제거
+                navLinks.forEach(link => {
+                    if (link) {
+                        link.classList.remove('active');
+                    }
+                });
+
+                // 클릭된 메뉴에 active 클래스 추가
+                navLinks.forEach(link => {
+                    if (link && link.getAttribute('onclick').includes(sectionId)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
